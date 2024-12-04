@@ -15,7 +15,7 @@ import com.AttendanceTracker.Prelag.Service.StoringService;
 
 
 @RestController
-@RequestMapping(path = "/Pre")
+@RequestMapping(path = "/Prelag")
 @CrossOrigin(origins = "*") // Allow all origins (any port)
 public class AddUserController {
 
