@@ -30,7 +30,7 @@ public class StoringService {
 
         try {
             store.save(user);
-            return "User stored successfully";
+            return "Stored To DB";
         } catch (Exception e) {
             e.printStackTrace(); // Log the actual error
             return "Error storing user: " + e.getMessage();

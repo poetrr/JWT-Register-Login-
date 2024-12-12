@@ -16,13 +16,20 @@ public class OTPValidationService {
     public void storeOtp(String email, String otp) {
         otpStore.put(email, new OtpDetails(otp, System.currentTimeMillis()));
     }
-    @Scheduled(fixedRate = 500000) // Run every 5 minutes
+    @Scheduled(fixedRate = 1000) // Run every 5 minutes
     public void cleanUpExpiredOtps() {
+        otpStore.forEach((key, details) -> {
+            System.out.println("Remaining Key: " + key);
+            System.out.println("OTP: " + details.getOtp());
+            System.out.println("Generated Time: " + details.getGeneratedTime());
+            System.out.println("-----");
+        });
         long currentTime = System.currentTimeMillis();
         otpStore.entrySet().removeIf(entry -> currentTime - entry.getValue().getGeneratedTime() > 60000);
+        
         // This will remove all OTPs that are older than 60 seconds
     }
-
+    
     // Validate the OTP
     public String validateOtp(String email, String enteredOtp) {
         if (!otpStore.containsKey(email)) {
@@ -32,7 +39,8 @@ public class OTPValidationService {
         OtpDetails otpDetails = otpStore.get(email);
         long currentTime = System.currentTimeMillis();
 
-        // Check if the OTP has expired that is 60 seconds limit
+        
+        // Check if the OTP has expired that is 60 seconds limi
         if ((currentTime - otpDetails.getGeneratedTime()) > 60000) {
             otpStore.remove(email); // Remove expired OTP
             return "OTP expired.";
@@ -42,9 +50,9 @@ public class OTPValidationService {
         if (!otpDetails.getOtp().equals(enteredOtp)) {
             return "Invalid OTP.";
         }
-
+        
         otpStore.remove(email); // Remove validated OTP
-        return "OTP validated successfully.";
+        return "OTP validated successfully";
     }
 
     // Internal class to store OTP and its generated time

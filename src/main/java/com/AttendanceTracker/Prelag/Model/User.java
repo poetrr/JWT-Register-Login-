@@ -8,13 +8,14 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="user_id")
     private Long id;
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @Column(name = "email", nullable = false, unique = true)
-    private String emailId;
+    private String email;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -37,11 +38,11 @@ public class User {
     }
 
     public String getEmailId() {
-        return emailId;
+        return email;
     }
 
     public void setEmailId(String emailId) {
-        this.emailId = emailId;
+        this.email = emailId;
     }
 
     public String getPassword() {

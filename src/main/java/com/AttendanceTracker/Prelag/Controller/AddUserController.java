@@ -40,7 +40,7 @@ public class AddUserController {
         emailService.sendOtpEmail(email, otp);
         otpValidationService.storeOtp(email, otp);
 
-        
+        otpValidationService.cleanUpExpiredOtps();
         
         return ResponseEntity.ok("OTP sent to " + email+otp);
     }
@@ -55,7 +55,7 @@ public class AddUserController {
         
         String validationMessage = otpValidationService.validateOtp(email, enteredOtp);
 
-        if (!validationMessage.equals("OTP validated successfully.")) {
+        if (!validationMessage.equals("OTP validated successfully")) {
             return ResponseEntity.badRequest().body(validationMessage);
         }
         
@@ -79,8 +79,4 @@ class TemporaryEmail{
 	public String getEmail() {
 		return email;
 	}
-
-
-
-
 }
