@@ -27,7 +27,10 @@ public class GetTeacherClassService {
     }
 
     public List<Map<String, Object>> getClassesByUserId(Integer userId) {
-        String sql = "SELECT class_name, created_at FROM classes WHERE creator_id = ?";
-        return jdbcTemplate.queryForList(sql, userId);
+        String sql = "SELECT class_id,class_name,subject_name,created_at FROM classes WHERE creator_id = ?";
+        
+        List<Map<String,Object>> result= jdbcTemplate.queryForList(sql, userId);
+        System.out.println(result);
+        return result;
     }
 }

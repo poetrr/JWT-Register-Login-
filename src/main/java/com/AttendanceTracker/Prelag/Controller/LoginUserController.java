@@ -14,7 +14,7 @@ import com.AttendanceTracker.Prelag.Service.LoginService;
 
 
 @RestController
-@RequestMapping(path="/prelag")
+@RequestMapping(path="/Prelag")
 @CrossOrigin(origins="*")//Allow all origins
 public class LoginUserController {
     
