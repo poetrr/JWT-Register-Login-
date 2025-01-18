@@ -10,5 +10,4 @@ public class PrelagApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PrelagApplication.class, args);
 	}
-
 }
