@@ -3,13 +3,13 @@ package com.AttendanceTracker.Prelag.Model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "Users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_id")
-    private Long id;
+    private int id;
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
@@ -21,11 +21,11 @@ public class User {
     private String password;
 
     // Getters and Setters
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
