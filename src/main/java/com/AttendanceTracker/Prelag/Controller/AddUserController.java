@@ -9,13 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.AttendanceTracker.Prelag.Service.EmailService;
+import com.AttendanceTracker.Prelag.Service.JwtUtil;
 import com.AttendanceTracker.Prelag.Service.OTPValidationService;
 import com.AttendanceTracker.Prelag.Service.OtpValidationRequest;
 import com.AttendanceTracker.Prelag.Service.StoringService;
 
 
 @RestController
-@RequestMapping(path = "/Prelag")
+@RequestMapping(path = "/classroom")
 @CrossOrigin(origins = "*") // Allow all origins (any port)
 public class AddUserController {
 
@@ -63,7 +64,8 @@ public class AddUserController {
         if(!dbresponse.equals("Stored To DB")) {
         	return ResponseEntity.badRequest().body(dbresponse);
         }
-        return ResponseEntity.ok("User Created");
+        String token = JwtUtil.generateToken(email);
+        return ResponseEntity.ok("User Created"+token);
         
         
         

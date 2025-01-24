@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import com.AttendanceTracker.Prelag.Model.User;
 
 @Repository
-public interface StoreServiceRepository extends JpaRepository<User, Long> {
+public interface StoreServiceRepository extends JpaRepository<User, Integer> {
     // Additional query methods can be defined here if needed
 }
