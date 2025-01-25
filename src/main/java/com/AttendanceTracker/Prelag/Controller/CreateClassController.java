@@ -27,7 +27,9 @@ public class CreateClassController {
         @RequestBody CreateClassDTO createClassRequest
         ) {
             try {
-                boolean validation = JwtUtil.validateToken(token);
+                System.out.println(createClassRequest.getSubjectName());
+                System.out.println(token);
+                boolean validation = JwtUtil.validateToken(token,createClassRequest.getEmail());
                 if (!validation) {
                     return ResponseEntity
                         .status(HttpStatus.UNAUTHORIZED)
@@ -67,6 +69,19 @@ public class CreateClassController {
 class CreateClassDTO{
     private int classId;
     private int creatorId;
+    private String email;
+    public int getClassId() {
+        return classId;
+    }
+    public void setClassId(int classId) {
+        this.classId = classId;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
     private String className;
     private String subjectName;
     public void setId(int classId){

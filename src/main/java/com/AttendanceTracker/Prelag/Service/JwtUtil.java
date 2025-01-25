@@ -1,15 +1,14 @@
 package com.AttendanceTracker.Prelag.Service;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
 import java.security.Key;
 import java.util.Date;
 
 public class JwtUtil {
-    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); // Generate a secure key
-    private static final long EXPIRATION_TIME = 86400000; // 1 day in milliseconds
+    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256); // Secure key generation
+    private static final long EXPIRATION_DURATION = 86400000; // Token validity: 1 day in milliseconds
 
     /**
      * Generates a JWT token for the given email.
@@ -20,9 +19,9 @@ public class JwtUtil {
     public static String generateToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(key)
+                .setIssuedAt(new Date()) // Current time as issued date
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_DURATION)) // Token expiry
+                .signWith(SECRET_KEY, SignatureAlgorithm.HS256) // Sign with secure key
                 .compact();
     }
 
@@ -33,25 +32,49 @@ public class JwtUtil {
      * @param email The email to match against the token's subject.
      * @return True if the token is valid, false otherwise.
      */
-    public static boolean validateToken(String token) {
+    public static boolean validateToken(String token, String email) {
         try {
-            Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token); // Validates signature and expiration
-            return true;
-        } catch (Exception e) {
-            return false; // Invalid token (expired, malformed, etc.)
+            Claims claims = parseToken(token); // Parse the token to get claims
+            return claims.getSubject().equals(email) && !isTokenExpired(claims);
+        } catch (JwtException | IllegalArgumentException e) {
+            // Log exception for debugging purposes (e.g., invalid signature, expired token, etc.)
+            e.printStackTrace();
+            return false;
         }
     }
 
-    // Extracts the email from the token
+    /**
+     * Extracts the email from the token's payload (subject field).
+     *
+     * @param token The JWT token.
+     * @return The email extracted from the token.
+     */
     public static String extractEmailFromToken(String token) {
+        Claims claims = parseToken(token);
+        return claims.getSubject();
+    }
+
+    /**
+     * Parses a JWT token and returns its claims.
+     *
+     * @param token The JWT token to parse.
+     * @return Claims object containing the token's payload.
+     */
+    private static Claims parseToken(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(SECRET_KEY)
                 .build()
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                .getBody();
+    }
+
+    /**
+     * Checks if a token is expired based on its claims.
+     *
+     * @param claims The claims object from the token.
+     * @return True if the token is expired, false otherwise.
+     */
+    private static boolean isTokenExpired(Claims claims) {
+        return claims.getExpiration().before(new Date());
     }
 }
