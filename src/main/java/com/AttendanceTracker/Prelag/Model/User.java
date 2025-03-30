@@ -1,5 +1,9 @@
 package com.AttendanceTracker.Prelag.Model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -20,6 +24,10 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Semester> semesters;
     // Getters and Setters
     public int getId() {
         return id;
@@ -51,5 +59,12 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    public List<Semester> getSemesters() {
+        return semesters;
+    }
+
+    public void setSemesters(List<Semester> semesters) {
+        this.semesters = semesters;
     }
 }

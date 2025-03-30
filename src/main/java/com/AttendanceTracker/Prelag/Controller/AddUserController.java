@@ -65,7 +65,12 @@ public class AddUserController {
         	return ResponseEntity.badRequest().body(dbresponse);
         }
         String token = JwtUtil.generateToken(email);
+
+        String tokenEmail=JwtUtil.extractEmailFromToken(token);
+        System.out.println(tokenEmail);
         return ResponseEntity.ok("User Created"+token);
+
+        
            
     }
 }

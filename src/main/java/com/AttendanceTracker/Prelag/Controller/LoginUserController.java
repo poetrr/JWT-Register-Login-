@@ -40,7 +40,8 @@ public class LoginUserController {
         }
         
         String token = JwtUtil.generateToken(email);
-        
+        String tokenEmail=JwtUtil.extractEmailFromToken(token);
+        System.out.println(tokenEmail);
         return ResponseEntity.ok("Login Successfull"+token);
     }
     
