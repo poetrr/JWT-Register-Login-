@@ -35,14 +35,19 @@ public interface SemesterRepository extends JpaRepository<Semester, Long> {
                        @Param("semesterName") String semesterName,
                        @Param("userId") int userId);
 
-
-
-    // 🔹 6. DELETE (Delete a semester ensuring user ownership)
     @Modifying
     @Transactional
-    @Query(value = "DELETE FROM semesters " +
-                   "WHERE semester_id = :semesterId " +
-                   "AND user_id = :userId", nativeQuery = true)
-    int deleteSemesterByUser(@Param("userId") int userId,
-                             @Param("semesterId") Long semesterId);
+    @Query("DELETE FROM Subject s WHERE s.semester.semesterId = :semesterId")
+    int deleteSubjectsBySemester(@Param("semesterId") Long semesterId);
+    
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM semesters WHERE semester_id = :semesterId AND user_id = :userId", nativeQuery = true)
+    int deleteSemesterByUser(@Param("userId") int userId, @Param("semesterId") Long semesterId);
+
+
+    @Query(value = "SELECT * FROM semesters WHERE user_id = :userId", nativeQuery = true)
+    List<Semester> findSemestersByUserId(@Param("userId") int userId);
+    
+
 }

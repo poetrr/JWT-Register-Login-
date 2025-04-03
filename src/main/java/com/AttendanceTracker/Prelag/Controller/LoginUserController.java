@@ -3,6 +3,7 @@ package com.AttendanceTracker.Prelag.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,9 +43,9 @@ public class LoginUserController {
         String token = JwtUtil.generateToken(email);
         String tokenEmail=JwtUtil.extractEmailFromToken(token);
         System.out.println(tokenEmail);
-        return ResponseEntity.ok("Login Successfull"+token);
+        return ResponseEntity.ok(token);
     }
-    
+ 
 }
 
 class LoginDTO{

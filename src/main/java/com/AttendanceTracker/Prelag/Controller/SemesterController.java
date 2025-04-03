@@ -29,8 +29,8 @@ public class SemesterController {
 
     @GetMapping("/getSemester")
     public ResponseEntity<List<Semester>> getSemesters(
-                @RequestHeader("Authoriztion")String token,
-                @RequestBody SemesterDTO request){
+                @RequestHeader("Authorization")String token
+                ){
         if (token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
@@ -38,7 +38,7 @@ public class SemesterController {
         System.out.println("after substring");
         System.out.println(token);
 
-        List<Semester> semesters=semesterService.getSemester(token, request);
+        List<Semester> semesters=semesterService.getSemester(token);
         return ResponseEntity.ok(semesters);
     }
     
@@ -74,7 +74,7 @@ public class SemesterController {
         return ResponseEntity.ok(addResult);
     }
     
-    @DeleteMapping("/deleteMapping")
+    @DeleteMapping("/deleteSemester")
     public ResponseEntity<Integer> deleteSemester(@RequestHeader("Authorization")String token,
                                                 @RequestBody SemesterDTO request ){
 

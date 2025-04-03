@@ -24,7 +24,7 @@ public class Semester {
     private User user;
 
     @OneToMany(mappedBy = "semester", cascade = CascadeType.ALL, orphanRemoval = true)
-    
+    @JsonIgnore
     private List<Subject> subjects;
 
     // Getters and Setters
