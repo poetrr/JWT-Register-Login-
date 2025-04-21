@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.AttendanceTracker.Prelag.DTOS.AlterSubjectsRequest;
 import com.AttendanceTracker.Prelag.DTOS.CreateSubjectsRequest;
+import com.AttendanceTracker.Prelag.DTOS.SemesterDTO;
+import com.AttendanceTracker.Prelag.DTOS.UpdateSubjectRequest;
 import com.AttendanceTracker.Prelag.Model.Subject;
 import com.AttendanceTracker.Prelag.Service.JwtUtil;
 import com.AttendanceTracker.Prelag.Service.SubjectsService;
@@ -78,6 +80,19 @@ public class SubjectsController {
         int alterResult=subjectsService.alterSubject(token, request);                               
         return ResponseEntity.ok(alterResult);
     }
+
+    @PutMapping("/updateSubjectName")
+        public ResponseEntity<Integer> updateSubjectName(@RequestHeader("Authorization") String token,
+                                                    @RequestBody UpdateSubjectRequest request) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+
+        System.out.println(JwtUtil.extractEmailFromToken(token));
+        int result = subjectsService.updateSubjectName(token, request);
+        return ResponseEntity.ok(result);
+    }
+
 
     @DeleteMapping("/deleteSubject")
     public ResponseEntity<Integer> deleteSubject(@RequestHeader("Authorization")String token,

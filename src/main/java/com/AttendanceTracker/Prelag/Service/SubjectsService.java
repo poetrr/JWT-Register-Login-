@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.AttendanceTracker.Prelag.DTOS.AlterSubjectsRequest;
 import com.AttendanceTracker.Prelag.DTOS.CreateSubjectsRequest;
+import com.AttendanceTracker.Prelag.DTOS.UpdateSubjectRequest;
 import com.AttendanceTracker.Prelag.Model.Subject;
 import com.AttendanceTracker.Prelag.Model.User;
 import com.AttendanceTracker.Prelag.Repositories.SubjectsRepository;
@@ -118,5 +119,19 @@ public class SubjectsService {
         return deletedRows;
     }
 
+    public int updateSubjectName(String token, UpdateSubjectRequest request) {
+    String email = JwtUtil.extractEmailFromToken(token);
+    if (!JwtUtil.validateToken(token, email)) {
+        throw new RuntimeException("Invalid Token");
+    }
+
+    Optional<User> user = userRepository.findByEmail(email);
+    if (user.isEmpty()) {
+        throw new RuntimeException("User not found");
+    }
+
+    int userId = user.get().getId();
+    return subjectsRepository.updateSubjectName(request.getSubjectId(), request.getSubjectName(), userId);
+}
 
 }

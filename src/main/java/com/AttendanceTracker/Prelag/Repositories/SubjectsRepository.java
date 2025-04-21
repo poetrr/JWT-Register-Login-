@@ -38,6 +38,14 @@ public interface SubjectsRepository extends JpaRepository<Subject, Long> {
     List<Subject> findSubjectsBySemesterIdAndUserId(@Param("semesterId") Long semesterId, 
                                                     @Param("userId") int userId);
 
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE subjects SET subject_name = :subjectName " +
+               "WHERE subject_id = :subjectId AND semester_id IN " +
+               "(SELECT semester_id FROM semesters WHERE user_id = :userId)", nativeQuery = true)
+    int updateSubjectName(@Param("subjectId") Long subjectId,
+    @Param("subjectName") String subjectName,
+    @Param("userId") int userId);
 
 
     @Modifying
