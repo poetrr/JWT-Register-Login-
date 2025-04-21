@@ -12,6 +12,9 @@ public class HashService {
 	        
 	 }
 	 public boolean verifyPassword(String plainPassword, String hashedPassword) {
-	        return passwordEncoder.matches(plainPassword, hashedPassword);
-	 }
+		boolean match = passwordEncoder.matches(plainPassword, hashedPassword);
+		System.out.println("Verifying '" + plainPassword + "' against '" + hashedPassword + "' -> " + match);
+		return match;
+	}
+	
 }

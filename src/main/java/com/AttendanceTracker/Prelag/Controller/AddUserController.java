@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.AttendanceTracker.Prelag.DTOS.UserCreationResponse;
 import com.AttendanceTracker.Prelag.Service.EmailService;
+import com.AttendanceTracker.Prelag.Service.HashService;
 import com.AttendanceTracker.Prelag.Service.JwtUtil;
 import com.AttendanceTracker.Prelag.Service.OTPValidationService;
 import com.AttendanceTracker.Prelag.Service.OtpValidationRequest;
@@ -29,8 +31,10 @@ public class AddUserController {
     @Autowired
     private StoringService storeDB;//Service to store the data to DB
 
-
-    @PostMapping(path = "/createUser")
+    @Autowired
+    HashService hashService;
+    
+    @PostMapping(path = "/sendOtp")
     public ResponseEntity<String> addUser(@RequestBody TemporaryEmail user) {
         String email = user.getEmail();
         
@@ -47,38 +51,53 @@ public class AddUserController {
     }
 
     @PostMapping(path = "/validateOtp")
-    public ResponseEntity<String> validateOtp(@RequestBody OtpValidationRequest request) {
+    public ResponseEntity<?> validateOtp(@RequestBody OtpValidationRequest request) {
         String email = request.getEmail();
         String enteredOtp = request.getOtp();
         String password=request.getPassword();
         String username=request.getUsername();
         
         
+       
         String validationMessage = otpValidationService.validateOtp(email, enteredOtp);
-
-        if (!validationMessage.equals("OTP validated successfully")) {
-            return ResponseEntity.badRequest().body(validationMessage);
-        }
         
-       String dbresponse=storeDB.StoreToDB(username, email, password);
-        if(!dbresponse.equals("Stored To DB")) {
-        	return ResponseEntity.badRequest().body(dbresponse);
+
+        if(validationMessage.equals("OTP validated successfully")){
+            String token = JwtUtil.generateToken(email);
+            
+            System.out.println("Registration - email: " + email);
+            System.out.println("Registration - plain password: " + password);
+            String hashedPassword = hashService.hashIt(email, password);
+            System.out.println("Registration - hashed password: " + hashedPassword);
+
+            String dbresponse=storeDB.StoreToDB(username, email, hashedPassword);
+            return ResponseEntity.ok(new UserCreationResponse(validationMessage,token ));
         }
-        String token = JwtUtil.generateToken(email);
-
-        String tokenEmail=JwtUtil.extractEmailFromToken(token);
-        System.out.println(tokenEmail);
-        return ResponseEntity.ok("User Created"+token);
-
-        
-           
+        if (!validationMessage.equals("Invalid Otp")) {
+            return ResponseEntity.ok(new UserCreationResponse("Invalid Otp", null));
+        }
+        return ResponseEntity.ok("Couldnot process request");        
     }
 }
 
 
 class TemporaryEmail{
 	String email;
-	public void setEmail(String email) {
+    String password;
+    String username;
+	public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public void setEmail(String email) {
 		this.email=email;
 	}
 	public String getEmail() {

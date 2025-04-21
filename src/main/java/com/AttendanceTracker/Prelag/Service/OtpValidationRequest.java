@@ -1,12 +1,12 @@
 package com.AttendanceTracker.Prelag.Service;
 
 public class OtpValidationRequest {
-	private String username;
-   
-
+	
+    private String username;
 	private String email;
     private String otp;
     private String password;
+
     public String getUsername() {
 		return username;
 	}

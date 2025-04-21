@@ -22,11 +22,10 @@ public class StoringService {
         }
 
         User user = new User();
-        String hashedPassword = hashService.hashIt(email, password);
-
+        
         user.setUsername(username);
         user.setEmailId(email);
-        user.setPassword(hashedPassword);
+        user.setPassword(password);
 
         try {
             store.save(user);

@@ -30,7 +30,7 @@ public class SubjectsController {
     @Autowired
     private SubjectsService subjectsService;
     
-    @GetMapping("/getSubjects")
+    @PostMapping("/getSubjects")
     public ResponseEntity<List<Subject>> getSubjectsBySemester(
             @RequestHeader("Authorization") String token,
             @RequestBody GetSemesterRequest request) {

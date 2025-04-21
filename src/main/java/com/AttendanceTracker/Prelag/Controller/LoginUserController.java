@@ -31,11 +31,12 @@ public class LoginUserController {
         String email=log.getEmail();
         String password=log.getPassword();
         String storedHashedPassword = loginService.getHashedPasswordByEmail(email);
-        System.out.println("Entered password"+password+"Stored Password"+storedHashedPassword);
+        System.out.println("Entered password :  "+password+"\nStored Password  :  "+storedHashedPassword);
         if(storedHashedPassword==null) {
         	return ResponseEntity.badRequest().body("user not found please sign up");
         }
         boolean isValid=hashService.verifyPassword(password, storedHashedPassword);
+        System.out.println(isValid);
         if(!isValid) {
         	return ResponseEntity.status(401).body("Invalid credential");
         }
