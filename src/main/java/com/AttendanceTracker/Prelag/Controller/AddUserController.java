@@ -71,6 +71,7 @@ public class AddUserController {
             System.out.println("Registration - hashed password: " + hashedPassword);
 
             String dbresponse=storeDB.StoreToDB(username, email, hashedPassword);
+            System.out.println(dbresponse);
             return ResponseEntity.ok(new UserCreationResponse(validationMessage,token ));
         }
         if (!validationMessage.equals("Invalid Otp")) {

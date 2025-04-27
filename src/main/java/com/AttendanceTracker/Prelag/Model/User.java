@@ -28,6 +28,34 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Semester> semesters;
+
+    @OneToMany(mappedBy = "user" ,cascade=CascadeType.ALL,orphanRemoval = true)
+    @JsonIgnore
+    private List<Category> categories;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonIgnore
+    private List<Expense> expenses;
+
+
+
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    public List<Expense> getExpenses() {
+        return expenses;
+    }
+
+    public void setExpenses(List<Expense> expenses) {
+        this.expenses = expenses;
+    }
+
     // Getters and Setters
     public int getId() {
         return id;
