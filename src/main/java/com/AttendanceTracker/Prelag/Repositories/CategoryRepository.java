@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.AttendanceTracker.Prelag.Model.Category;
 
-import jakarta.transaction.TransactionScoped;
+
 import jakarta.transaction.Transactional;
 
 public interface CategoryRepository extends JpaRepository<Category,Long>{
