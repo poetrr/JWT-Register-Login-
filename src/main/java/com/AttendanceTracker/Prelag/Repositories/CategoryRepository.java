@@ -39,9 +39,6 @@ public interface CategoryRepository extends JpaRepository<Category,Long>{
     @Transactional
     @Query(value="DELETE FROM category where userId=:userId AND category_id=:categoryId",nativeQuery = true)
     int deleteCategory(@Param("categoryId")Long categoryId,
-                       @Param("userId")Long userId);
+                       @Param("userId")Long userId);   
 
-    
-
-    
 }
