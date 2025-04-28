@@ -11,9 +11,7 @@ public class StoringService {
     @Autowired
     private StoreServiceRepository store;
 
-    @Autowired
-    private HashService hashService; // Assumes you have a service for hashing passwords
-
+     
     public String StoreToDB(String username, String email, String password) {
     	System.out.printf("Username: %s, Email: %s, Password: %s%n", username, email, password);
 

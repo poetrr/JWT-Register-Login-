@@ -24,7 +24,7 @@ public class Category {
     private long id;
 
 
-    @Column(nullable=false)
+    @Column(name="catgory_name",nullable=false)
     private String categoryName;
     
     @ManyToOne
